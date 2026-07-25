@@ -10,10 +10,24 @@ import pandas as pd
 
 st.set_page_config(page_title="模型選擇地圖 · 黃德麟", page_icon="🧭", layout="wide")
 
-# ── 已驗證調色盤（fixed order, CVD-safe）──
-C1, C2, C3, C4 = "#2a78d6", "#eb6834", "#1baf7a", "#eda100"  # blue/orange/aqua/yellow
-GRAY, LIGHTBLUE = "#9a9890", "#a7c7ee"
-INK, MUTED = "#1a1a1a", "#6b6a63"
+# ── 與作品集 index.html 同一組 STEADY 棕色調色盤 ──
+ACCENT, GOLD, TEAL, RUST = "#6e4526", "#916a28", "#2f5250", "#a33b2a"
+BROWN2, TAN, INK, MUTED = "#8a5a30", "#c3b7a0", "#37302a", "#5f5344"
+C1, C2, C3, C4 = ACCENT, RUST, TEAL, GOLD  # 保留舊變數名相容，改指向新色碼
+GRAY, LIGHTBLUE = TAN, GOLD
+
+st.markdown("""
+<style>
+  html, body, [class*="css"] { font-family:"Noto Sans TC","Microsoft JhengHei",sans-serif; }
+  [data-testid="stMetric"] { background:#ffffff; border:1px solid #e6ddce; border-radius:12px; padding:14px 16px; }
+  [data-testid="stMetricLabel"] { color:#5f5344; }
+  [data-testid="stMetricValue"] { color:#6e4526; }
+  .stTabs [data-baseweb="tab"] { color:#5f5344; font-weight:700; }
+  .stTabs [aria-selected="true"] { color:#6e4526 !important; }
+  .stTabs [data-baseweb="tab-highlight"] { background-color:#6e4526 !important; }
+  div[data-testid="stDataFrame"] { border:1px solid #e6ddce; border-radius:12px; overflow:hidden; }
+</style>
+""", unsafe_allow_html=True)
 
 st.title("🧭 什麼狀況用什麼模型？")
 st.caption("資料分析專案成果儀表板 · 黃德麟 · 數字全部來自本機實跑、追得到出處")
@@ -102,7 +116,7 @@ with tab2:
         st.markdown("**用對指標驗收模型：baseline Accuracy 贏、Recall 掛零**")
         fig = go.Figure()
         fig.add_bar(name="baseline（永遠猜留客）", x=["Accuracy", "Recall"], y=[80.7, 0],
-                    marker_color=GRAY, text=["80.7%", "0%"], textposition="outside")
+                    marker_color=GOLD, text=["80.7%", "0%"], textposition="outside")
         fig.add_bar(name="決策樹模型", x=["Accuracy", "Recall"], y=[75.3, 75.9],
                     marker_color=C1, text=["75.3%", "75.9%"], textposition="outside")
         fig.update_layout(barmode="group", height=320, margin=dict(t=10, b=10),
@@ -115,7 +129,7 @@ with tab2:
         st.markdown("**購物籃關聯：Top 3 規則（Lift）**")
         rules = ["醬油 → 米", "紅酒 ↔ 起司", "尿布 ↔ 啤酒"]
         lifts = [5.18, 7.20, 7.32]
-        fig = go.Figure(go.Bar(x=lifts, y=rules, orientation="h", marker_color=C1,
+        fig = go.Figure(go.Bar(x=lifts, y=rules, orientation="h", marker_color=[GOLD, BROWN2, ACCENT],
                                text=[f"{v:.2f}" for v in lifts], textposition="outside"))
         fig.add_vline(x=1, line_dash="dash", line_color=MUTED,
                       annotation_text="Lift=1 統計獨立", annotation_position="bottom right")
@@ -129,7 +143,7 @@ with tab2:
         st.markdown("**配送路徑最佳化：重點不是省 3.3%，是從「不可行」到「可行」**")
         fig = go.Figure(go.Bar(
             x=["人工 baseline", "OR-Tools"], y=[3148, 3044],
-            marker_color=[GRAY, C1],
+            marker_color=[RUST, ACCENT],
             text=["$3,148<br>⚠ 4 條時窗違反（不可行）", "$3,044<br>✓ 0 違反（可行）"],
             textposition="outside"))
         fig.update_layout(height=340, margin=dict(t=30, b=10), yaxis=dict(range=[0, 3900], title="總成本 (NT$)"),
@@ -140,7 +154,7 @@ with tab2:
         st.markdown("**客戶分群：K-means 四群客戶（1,500 位）**")
         segs = ["VIP 高頻高額", "穩定中段", "流失高風險", "沉睡客戶"]
         counts = [134, 750, 504, 112]
-        fig = go.Figure(go.Bar(x=segs, y=counts, marker_color=[C1, C3, C2, C4],
+        fig = go.Figure(go.Bar(x=segs, y=counts, marker_color=[GOLD, TEAL, RUST, TAN],
                                text=counts, textposition="outside"))
         fig.update_layout(height=340, margin=dict(t=10, b=10), yaxis=dict(title="人數"),
                           plot_bgcolor="white", bargap=0.4)
