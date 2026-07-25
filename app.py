@@ -39,7 +39,7 @@ SCENARIOS = {
     "我想知道哪些客戶快流失了": dict(
         model="監督式分類 · 決策樹", day="客戶流失預測", family="監督式學習（y=離散標籤）",
         why="有歷史答案欄（流失/沒流失），y 是類別 → 分類問題。",
-        result="Test Recall 75.9%、AUC 0.811。反直覺實證：baseline「永遠猜留客」Accuracy 80.7% 竟贏過決策樹模型 75.3%，但 Recall=0%——一個流失客戶都抓不到。",
+        result="Test Recall 75.9%、AUC 0.811。反直覺實證：baseline「永遠猜留客」Accuracy 80.7% 竟贏過決策樹模型 75.3%，但 Recall=0%——一個流失客戶都抓不到。換算成錢：29 位實際流失客戶消費金額合計 NT$592,602，模型抓到的 22 人只佔 NT$394,456（66.6%）——漏掉的 7 人藏著更高比例的高價值客戶。",
         lesson="類別不平衡時 Accuracy 會騙人，業務要看 Recall（漏掉真流失的代價 >> 誤判的挽留成本）。"),
     "我想知道下個月會賣多少": dict(
         model="時間序列回歸 · Prophet + Baseline", day="銷量預測", family="監督式學習（y=連續數值＋時間軸）",
